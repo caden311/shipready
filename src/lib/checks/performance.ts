@@ -63,8 +63,13 @@ export function checkPerformance(data: ParsedSEOData): CheckResult[] {
   }
 
   // Text compression
+  // Note: Cloudflare Workers auto-decompress fetch responses, stripping content-encoding.
+  // So we also check for Vary: Accept-Encoding which indicates the server supports compression.
   const contentEncoding = data.responseHeaders['content-encoding'];
-  const hasCompression = contentEncoding && (contentEncoding.includes('gzip') || contentEncoding.includes('br'));
+  const vary = data.responseHeaders['vary'] || '';
+  const hasCompression =
+    (contentEncoding && (contentEncoding.includes('gzip') || contentEncoding.includes('br'))) ||
+    vary.toLowerCase().includes('accept-encoding');
   checks.push({
     id: 'perf-compression',
     name: 'Text compression',
