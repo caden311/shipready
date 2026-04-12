@@ -1,0 +1,514 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import JsonLd from '../components/JsonLd.astro';
+
+const webAppSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'ShipReady SEO Scanner',
+  description: 'Free SEO scanner for vibe-coded apps. Paste your URL, get a scored report card with copy-paste fixes.',
+  url: 'https://vientapps.com/tools/seo-check/',
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'Any',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Vient Apps',
+    url: 'https://vientapps.com',
+  },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What SEO problems do AI-generated sites have?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'AI coding tools like Cursor, Claude Code, and v0 build working apps but typically skip SEO basics: missing meta descriptions, no Open Graph tags (so links look ugly when shared), no sitemap.xml, no structured data, missing alt text on images, and no robots.txt. These are all easy to fix once you know about them.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How does ShipReady scan my site?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Paste your deployed URL and ShipReady fetches the page, parses the HTML, and runs checks across 6 categories: Meta & Head, Social Sharing, Discoverability, On-Page Structure, Performance, and Structured Data. You get a letter grade and copy-paste fixes for every issue found.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is ShipReady free?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, ShipReady is completely free. You can scan up to 10 URLs per hour.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is the "Fix All" prompt?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'After scanning, ShipReady generates a single text block describing every SEO issue found. You can copy this and paste it directly into Claude Code, Cursor, or any AI coding tool, and it will fix all the issues for you.',
+      },
+    },
+  ],
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Tools', item: 'https://vientapps.com/tools/' },
+    { '@type': 'ListItem', position: 2, name: 'SEO Checker', item: 'https://vientapps.com/tools/seo-check/' },
+  ],
+};
+
+const categories = [
+  {
+    icon: '🏷️',
+    name: 'Meta & Head',
+    description: 'Title tags, meta descriptions, canonical URLs, viewport, language, favicons',
+  },
+  {
+    icon: '📱',
+    name: 'Social & Sharing',
+    description: 'Open Graph tags, Twitter Cards, share image dimensions',
+  },
+  {
+    icon: '🔍',
+    name: 'Discoverability',
+    description: 'robots.txt, sitemaps, indexability, HTTPS, llms.txt for AI search',
+  },
+  {
+    icon: '📄',
+    name: 'On-Page Structure',
+    description: 'Headings, image alt text, internal links, content depth',
+  },
+  {
+    icon: '⚡',
+    name: 'Performance',
+    description: 'Render-blocking scripts, image formats, text compression',
+  },
+  {
+    icon: '📊',
+    name: 'Structured Data',
+    description: 'JSON-LD, schema.org types, breadcrumbs, rich result eligibility',
+  },
+];
+---
+
+<BaseLayout
+  title="ShipReady - Free SEO Scanner for Vibe-Coded Apps"
+  description="Scan your AI-generated site for SEO problems. Get a scored report card with copy-paste fixes you can hand to Claude Code or Cursor. Free, instant, no signup."
+>
+  <JsonLd schema={webAppSchema} slot="head" />
+  <JsonLd schema={faqSchema} slot="head" />
+  <JsonLd schema={breadcrumbSchema} slot="head" />
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden border-b border-surface-700 bg-surface-900">
+    <div class="mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-24 text-center">
+      <p class="mb-4 text-sm font-medium tracking-wider text-forge-400 uppercase">Free SEO Scanner</p>
+      <h1 class="font-display text-4xl font-bold text-white sm:text-5xl lg:text-6xl leading-tight">
+        Is your vibe-coded app<br />ready for Google?
+      </h1>
+      <p class="mx-auto mt-6 max-w-2xl text-lg text-gray-400 leading-relaxed">
+        AI tools build working apps but skip SEO basics. Paste your URL and get a
+        scored report card with copy-paste fixes you can hand right back to your AI coding tool.
+      </p>
+
+      <!-- Scanner Input -->
+      <div class="mx-auto mt-10 max-w-2xl">
+        <form id="scan-form" class="flex flex-col sm:flex-row gap-3">
+          <input
+            type="url"
+            id="url-input"
+            placeholder="https://your-app.vercel.app"
+            required
+            class="flex-1 rounded-lg border border-surface-600 bg-surface-800 px-4 py-3 text-white placeholder-gray-500 focus:border-forge-500 focus:outline-none focus:ring-2 focus:ring-forge-500/20 transition-colors text-lg"
+          />
+          <button
+            type="submit"
+            id="scan-button"
+            class="rounded-lg bg-forge-500 px-8 py-3 font-semibold text-surface-950 hover:bg-forge-400 focus:outline-none focus:ring-2 focus:ring-forge-500/50 transition-colors text-lg whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Scan My Site
+          </button>
+        </form>
+        <p class="mt-3 text-sm text-gray-500">Free, no signup. Up to 10 scans per hour.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Loading State -->
+  <div id="loading-state" class="hidden">
+    <div class="mx-auto max-w-4xl px-4 py-16 sm:px-6 text-center">
+      <div class="inline-flex items-center gap-3 rounded-lg border border-surface-600 bg-surface-800 px-6 py-4">
+        <svg class="h-6 w-6 animate-spin text-forge-400" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+        </svg>
+        <span class="text-gray-300 text-lg">Scanning your site...</span>
+      </div>
+      <p class="mt-4 text-sm text-gray-500">Checking meta tags, social sharing, sitemaps, structured data, and more.</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div id="error-state" class="hidden">
+    <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+      <div class="rounded-lg border border-red-500/30 bg-red-500/10 p-6 text-center">
+        <p class="text-red-400 text-lg font-medium" id="error-message"></p>
+        <button
+          id="try-again-button"
+          class="mt-4 rounded-lg border border-red-500/30 px-6 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
+        >
+          Try Again
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Container -->
+  <div id="results-container" class="hidden">
+    <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+      <!-- Grade Card -->
+      <div id="grade-card" class="mb-8 rounded-xl border border-surface-700 bg-surface-900 p-8 text-center">
+        <p class="text-sm text-gray-500 mb-2">Overall SEO Score</p>
+        <div class="flex items-center justify-center gap-6">
+          <span id="grade-letter" class="font-display text-7xl font-bold"></span>
+          <div class="text-left">
+            <p id="grade-score" class="text-3xl font-bold text-white"></p>
+            <p id="grade-summary" class="text-gray-400"></p>
+          </div>
+        </div>
+        <p id="scanned-url" class="mt-4 text-sm text-gray-500"></p>
+      </div>
+
+      <!-- Category Cards -->
+      <div id="categories-container" class="space-y-4"></div>
+
+      <!-- Fix All Prompt -->
+      <div id="fix-all-section" class="mt-8 rounded-xl border border-surface-700 bg-surface-900 p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-display text-xl font-bold text-white">Fix All with AI</h2>
+          <button
+            id="copy-fix-all"
+            class="rounded-lg border border-forge-500/30 bg-forge-500/10 px-4 py-2 text-sm font-medium text-forge-400 hover:bg-forge-500/20 transition-colors"
+          >
+            Copy to Clipboard
+          </button>
+        </div>
+        <p class="text-sm text-gray-400 mb-4">
+          Copy this prompt and paste it into Claude Code, Cursor, or any AI coding tool to fix all issues at once.
+        </p>
+        <pre id="fix-all-prompt" class="max-h-96 overflow-auto rounded-lg bg-surface-950 p-4 text-sm text-gray-300 border border-surface-700 whitespace-pre-wrap"></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- What We Check -->
+  <section class="border-t border-surface-700 bg-surface-950">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <h2 class="font-display text-3xl font-bold text-white text-center mb-4">What We Check</h2>
+      <p class="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
+        ShipReady scans 30+ SEO signals across 6 categories, covering everything AI coding tools typically miss.
+      </p>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {categories.map((cat) => (
+          <div class="rounded-xl border border-surface-700 bg-surface-900 p-6">
+            <span class="text-2xl">{cat.icon}</span>
+            <h3 class="font-display text-lg font-bold text-white mt-3 mb-2">{cat.name}</h3>
+            <p class="text-sm text-gray-400 leading-relaxed">{cat.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="border-t border-surface-700">
+    <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+      <h2 class="font-display text-3xl font-bold text-white text-center mb-12">Frequently Asked Questions</h2>
+      <div class="space-y-3">
+        <details class="group rounded-xl border border-surface-700 bg-surface-900">
+          <summary class="flex cursor-pointer items-center justify-between p-5 font-medium text-white">
+            <span>What SEO problems do AI-generated sites have?</span>
+            <svg class="h-5 w-5 shrink-0 text-forge-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="border-t border-surface-700 px-5 py-4 text-sm leading-relaxed text-gray-400">
+            AI coding tools like Cursor, Claude Code, and v0 build working apps but typically skip SEO basics: missing meta descriptions, no Open Graph tags (so links look ugly when shared), no sitemap.xml, no structured data, missing alt text on images, and no robots.txt. These are all easy to fix once you know about them.
+          </div>
+        </details>
+        <details class="group rounded-xl border border-surface-700 bg-surface-900">
+          <summary class="flex cursor-pointer items-center justify-between p-5 font-medium text-white">
+            <span>How does ShipReady scan my site?</span>
+            <svg class="h-5 w-5 shrink-0 text-forge-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="border-t border-surface-700 px-5 py-4 text-sm leading-relaxed text-gray-400">
+            Paste your deployed URL and ShipReady fetches the page, parses the HTML, and runs checks across 6 categories: Meta & Head, Social Sharing, Discoverability, On-Page Structure, Performance, and Structured Data. You get a letter grade and copy-paste fixes for every issue found.
+          </div>
+        </details>
+        <details class="group rounded-xl border border-surface-700 bg-surface-900">
+          <summary class="flex cursor-pointer items-center justify-between p-5 font-medium text-white">
+            <span>Is ShipReady free?</span>
+            <svg class="h-5 w-5 shrink-0 text-forge-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="border-t border-surface-700 px-5 py-4 text-sm leading-relaxed text-gray-400">
+            Yes, completely free. You can scan up to 10 URLs per hour. No signup, no email required.
+          </div>
+        </details>
+        <details class="group rounded-xl border border-surface-700 bg-surface-900">
+          <summary class="flex cursor-pointer items-center justify-between p-5 font-medium text-white">
+            <span>What is the "Fix All" prompt?</span>
+            <svg class="h-5 w-5 shrink-0 text-forge-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="border-t border-surface-700 px-5 py-4 text-sm leading-relaxed text-gray-400">
+            After scanning, ShipReady generates a single text block describing every SEO issue found. You can copy this and paste it directly into Claude Code, Cursor, or any AI coding tool, and it will fix all the issues for you.
+          </div>
+        </details>
+        <details class="group rounded-xl border border-surface-700 bg-surface-900">
+          <summary class="flex cursor-pointer items-center justify-between p-5 font-medium text-white">
+            <span>Does ShipReady work with JavaScript-rendered sites?</span>
+            <svg class="h-5 w-5 shrink-0 text-forge-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="border-t border-surface-700 px-5 py-4 text-sm leading-relaxed text-gray-400">
+            ShipReady scans the initial HTML your server sends, which is the same thing search engines see on their first pass. If your site relies on client-side rendering (like a plain React SPA), ShipReady will detect that and flag it as a discoverability concern. Most SEO-critical elements like meta tags and structured data are typically in the initial HTML even on JS-heavy sites.
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('scan-form') as HTMLFormElement;
+    const urlInput = document.getElementById('url-input') as HTMLInputElement;
+    const scanButton = document.getElementById('scan-button') as HTMLButtonElement;
+    const loadingState = document.getElementById('loading-state')!;
+    const errorState = document.getElementById('error-state')!;
+    const errorMessage = document.getElementById('error-message')!;
+    const tryAgainButton = document.getElementById('try-again-button')!;
+    const resultsContainer = document.getElementById('results-container')!;
+    const gradeLetter = document.getElementById('grade-letter')!;
+    const gradeScore = document.getElementById('grade-score')!;
+    const gradeSummary = document.getElementById('grade-summary')!;
+    const scannedUrl = document.getElementById('scanned-url')!;
+    const categoriesContainer = document.getElementById('categories-container')!;
+    const fixAllPrompt = document.getElementById('fix-all-prompt')!;
+    const copyFixAll = document.getElementById('copy-fix-all')!;
+    const fixAllSection = document.getElementById('fix-all-section')!;
+
+    function getGradeColor(grade: string): string {
+      switch (grade) {
+        case 'A': return 'text-emerald-400';
+        case 'B': return 'text-lime-400';
+        case 'C': return 'text-yellow-400';
+        case 'D': return 'text-orange-400';
+        default: return 'text-red-400';
+      }
+    }
+
+    function getStatusIcon(status: string): string {
+      switch (status) {
+        case 'pass': return '<span class="text-emerald-400">&#10003;</span>';
+        case 'warn': return '<span class="text-yellow-400">&#9888;</span>';
+        case 'fail': return '<span class="text-red-400">&#10007;</span>';
+        default: return '';
+      }
+    }
+
+    function getStatusBg(status: string): string {
+      switch (status) {
+        case 'pass': return 'border-emerald-500/20 bg-emerald-500/5';
+        case 'warn': return 'border-yellow-500/20 bg-yellow-500/5';
+        case 'fail': return 'border-red-500/20 bg-red-500/5';
+        default: return 'border-surface-700';
+      }
+    }
+
+    function getCategoryScoreColor(score: number): string {
+      if (score >= 80) return 'text-emerald-400';
+      if (score >= 60) return 'text-yellow-400';
+      return 'text-red-400';
+    }
+
+    function showState(state: 'idle' | 'loading' | 'error' | 'results') {
+      loadingState.classList.toggle('hidden', state !== 'loading');
+      errorState.classList.toggle('hidden', state !== 'error');
+      resultsContainer.classList.toggle('hidden', state !== 'results');
+    }
+
+    function renderResults(data: any) {
+      // Grade card
+      gradeLetter.textContent = data.grade;
+      gradeLetter.className = `font-display text-7xl font-bold ${getGradeColor(data.grade)}`;
+      gradeScore.textContent = `${data.overallScore}/100`;
+      const failCount = data.categories.reduce((acc: number, cat: any) =>
+        acc + cat.checks.filter((c: any) => c.status === 'fail').length, 0);
+      const warnCount = data.categories.reduce((acc: number, cat: any) =>
+        acc + cat.checks.filter((c: any) => c.status === 'warn').length, 0);
+      gradeSummary.textContent = `${failCount} critical issue${failCount !== 1 ? 's' : ''}, ${warnCount} warning${warnCount !== 1 ? 's' : ''}`;
+      scannedUrl.textContent = `Scanned: ${data.finalUrl}`;
+
+      // Category cards
+      categoriesContainer.innerHTML = '';
+      for (const cat of data.categories) {
+        const failedChecks = cat.checks.filter((c: any) => c.status === 'fail').length;
+        const warnChecks = cat.checks.filter((c: any) => c.status === 'warn').length;
+        const passChecks = cat.checks.filter((c: any) => c.status === 'pass').length;
+
+        const card = document.createElement('div');
+        card.className = 'rounded-xl border border-surface-700 bg-surface-900 overflow-hidden';
+        card.innerHTML = `
+          <button class="category-toggle w-full flex items-center justify-between p-6 text-left hover:bg-surface-800/50 transition-colors" aria-expanded="false">
+            <div class="flex items-center gap-4">
+              <span class="font-display text-2xl font-bold ${getCategoryScoreColor(cat.score)}">${cat.score}</span>
+              <div>
+                <h3 class="font-display text-lg font-bold text-white">${cat.name}</h3>
+                <p class="text-sm text-gray-500">${passChecks} passed, ${warnChecks} warning${warnChecks !== 1 ? 's' : ''}, ${failedChecks} failed</p>
+              </div>
+            </div>
+            <svg class="category-chevron h-5 w-5 text-gray-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="category-content hidden border-t border-surface-700">
+            <div class="p-4 space-y-2">
+              ${cat.checks.map((check: any) => `
+                <div class="rounded-lg border ${getStatusBg(check.status)} p-4">
+                  <div class="flex items-start gap-3">
+                    <span class="mt-0.5 text-lg">${getStatusIcon(check.status)}</span>
+                    <div class="flex-1 min-w-0">
+                      <p class="font-medium text-white">${check.name}</p>
+                      <p class="text-sm text-gray-400 mt-1">${check.message}</p>
+                      ${check.details ? `<p class="text-xs text-gray-500 mt-1 font-mono break-all">${check.details.replace(/\n/g, '<br>')}</p>` : ''}
+                      ${check.fixSnippet ? `
+                        <details class="mt-3">
+                          <summary class="text-sm text-forge-400 cursor-pointer hover:text-forge-300">Show fix</summary>
+                          <div class="mt-2 relative">
+                            <pre class="rounded bg-surface-950 p-3 text-xs text-gray-300 overflow-x-auto border border-surface-700">${escapeHtml(check.fixSnippet)}</pre>
+                            <button class="copy-snippet absolute top-2 right-2 rounded bg-surface-700 px-2 py-1 text-xs text-gray-400 hover:text-white transition-colors" data-snippet="${escapeAttr(check.fixSnippet)}">Copy</button>
+                          </div>
+                        </details>
+                      ` : ''}
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+        categoriesContainer.appendChild(card);
+      }
+
+      // Fix all prompt
+      const hasIssues = failCount > 0 || warnCount > 0;
+      fixAllSection.classList.toggle('hidden', !hasIssues);
+      if (hasIssues) {
+        fixAllPrompt.textContent = data.fixAllPrompt;
+      }
+
+      // Set up category toggles
+      document.querySelectorAll('.category-toggle').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const content = btn.nextElementSibling as HTMLElement;
+          const chevron = btn.querySelector('.category-chevron') as HTMLElement;
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', String(!expanded));
+          content.classList.toggle('hidden');
+          chevron.style.transform = expanded ? '' : 'rotate(180deg)';
+        });
+      });
+
+      // Set up snippet copy buttons
+      document.querySelectorAll('.copy-snippet').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const snippet = (btn as HTMLElement).dataset.snippet || '';
+          navigator.clipboard.writeText(snippet).then(() => {
+            const original = btn.textContent;
+            btn.textContent = 'Copied!';
+            setTimeout(() => { btn.textContent = original; }, 2000);
+          });
+        });
+      });
+
+      showState('results');
+      resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function escapeHtml(str: string): string {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function escapeAttr(str: string): string {
+      return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = urlInput.value.trim();
+      if (!url) return;
+
+      showState('loading');
+      scanButton.disabled = true;
+
+      try {
+        const baseUrl = (import.meta.env.BASE_URL || '/tools/seo-check').replace(/\/$/, '');
+        const response = await fetch(`${baseUrl}/api/scan/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          errorMessage.textContent = data.message || 'Something went wrong. Please try again.';
+          showState('error');
+          return;
+        }
+
+        renderResults(data);
+      } catch (err) {
+        errorMessage.textContent = 'Network error. Please check your connection and try again.';
+        showState('error');
+      } finally {
+        scanButton.disabled = false;
+      }
+    });
+
+    tryAgainButton.addEventListener('click', () => {
+      showState('idle');
+      urlInput.focus();
+    });
+
+    copyFixAll.addEventListener('click', () => {
+      const text = fixAllPrompt.textContent || '';
+      navigator.clipboard.writeText(text).then(() => {
+        const original = copyFixAll.textContent;
+        copyFixAll.textContent = 'Copied!';
+        setTimeout(() => { copyFixAll.textContent = original; }, 2000);
+      });
+    });
+  </script>
+</BaseLayout>

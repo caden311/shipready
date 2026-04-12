@@ -1,0 +1,86 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalURL?: string;
+  ogImage?: string;
+}
+
+const { title, description, canonicalURL, ogImage } = Astro.props;
+const siteUrl = 'https://vientapps.com';
+const resolvedCanonical = canonicalURL || new URL(Astro.url.pathname, siteUrl).toString();
+const resolvedOgImage = ogImage || new URL('/tools/seo-check/og-shipready.png', siteUrl).toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={resolvedCanonical} />
+    <link rel="icon" type="image/svg+xml" href="/tools/seo-check/favicon.svg" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={resolvedCanonical} />
+    <meta property="og:image" content={resolvedOgImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Vient Apps" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={resolvedOgImage} />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <slot name="head" />
+  </head>
+  <body class="min-h-screen bg-surface-950 text-gray-200 antialiased">
+    <header class="border-b border-surface-700 bg-surface-900/80 backdrop-blur-sm">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
+        <a href="/tools/seo-check/" class="flex items-center gap-2 text-white hover:text-forge-300 transition-colors">
+          <span class="font-display text-xl font-bold">ShipReady</span>
+        </a>
+        <a
+          href="https://vientapps.com/tools/"
+          class="text-sm text-gray-400 hover:text-forge-400 transition-colors"
+        >
+          More Tools
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="mt-auto border-t border-surface-700 bg-surface-900/50">
+      <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
+          <p class="text-sm text-gray-500">
+            Built by <a href="https://vientapps.com" class="text-forge-400 hover:text-forge-300 transition-colors">Vient Apps</a>
+          </p>
+          <div class="flex gap-6 text-sm text-gray-500">
+            <a href="https://vientapps.com/tools/" class="hover:text-gray-300 transition-colors">All Tools</a>
+            <a href="https://vientapps.com/blog/" class="hover:text-gray-300 transition-colors">Blog</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
