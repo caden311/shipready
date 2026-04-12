@@ -473,7 +473,7 @@ const categories = [
       scanButton.disabled = true;
 
       try {
-        const baseUrl = '';
+        const baseUrl = (import.meta.env.BASE_URL || '/tools/seo-check').replace(/\/$/, '');
         const response = await fetch(`${baseUrl}/api/scan/`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

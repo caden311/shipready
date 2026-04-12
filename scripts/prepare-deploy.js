@@ -1,8 +1,8 @@
-import { cpSync, mkdirSync, rmSync, existsSync } from 'node:fs';
+import { cpSync, mkdirSync, rmSync, existsSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
 
 // Separate worker code from static assets for Wrangler deployment.
-// Astro's Cloudflare adapter puts everything in dist/, but Wrangler
-// needs the worker entry point and static assets in separate directories.
+// Mirrors PackSmart's pattern: assets preserve the full base path structure.
 
 const DIST = 'dist';
 const ASSETS_DIR = 'dist-assets';
@@ -17,9 +17,12 @@ mkdirSync(WORKER_DIR, { recursive: true });
 cpSync(`${DIST}/_worker.js`, `${WORKER_DIR}/_worker.js`, { recursive: true });
 
 // Copy static assets (everything except _worker.js and _routes.json)
+// The dist/ directory contains tools/seo-check/ with the static files
+// because of the Astro base path config. We preserve this structure.
 mkdirSync(ASSETS_DIR, { recursive: true });
-cpSync(`${DIST}/_astro`, `${ASSETS_DIR}/_astro`, { recursive: true });
-cpSync(`${DIST}/favicon.svg`, `${ASSETS_DIR}/favicon.svg`);
-cpSync(`${DIST}/index.html`, `${ASSETS_DIR}/index.html`);
+for (const entry of readdirSync(DIST)) {
+  if (entry === '_worker.js' || entry === '_routes.json') continue;
+  cpSync(join(DIST, entry), join(ASSETS_DIR, entry), { recursive: true });
+}
 
 console.log('Deploy assets prepared: dist-worker/ and dist-assets/');
