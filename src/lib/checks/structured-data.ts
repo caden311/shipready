@@ -100,9 +100,12 @@ export function checkStructuredData(data: ParsedSEOData): CheckResult[] {
       });
     }
 
-    // BreadcrumbList suggestion
+    // BreadcrumbList suggestion (skip for homepage - breadcrumbs don't apply to root)
+    const isHomepage = (() => {
+      try { const u = new URL(data.finalUrl); return u.pathname === '/' || u.pathname === ''; } catch { return false; }
+    })();
     const hasBreadcrumb = typesFound.some((t) => t === 'BreadcrumbList');
-    if (!hasBreadcrumb) {
+    if (!hasBreadcrumb && !isHomepage) {
       checks.push({
         id: 'schema-breadcrumbs',
         name: 'Breadcrumb schema',
@@ -158,6 +161,12 @@ function detectPageType(
 ): { message: string; snippet: string } | null {
   const text = (data.title || '').toLowerCase() + ' ' + (data.metaDescription || '').toLowerCase();
   const bodyText = data.bodyTextLength;
+
+  // Skip type suggestions for homepages - they're landing pages, not articles/products
+  const isHomepage = (() => {
+    try { const u = new URL(data.finalUrl); return u.pathname === '/' || u.pathname === ''; } catch { return false; }
+  })();
+  if (isHomepage) return null;
 
   // Check for article signals
   const hasArticleSignals =
