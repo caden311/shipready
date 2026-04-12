@@ -194,6 +194,7 @@ export async function parseHTML(response: Response, finalUrl: string): Promise<P
         src,
         async: hasAttr(attrs, 'async'),
         defer: hasAttr(attrs, 'defer'),
+        isModule: type === 'module',
         inHead: isInHead,
       });
     }

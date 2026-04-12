@@ -49,7 +49,7 @@ export interface ParsedSEOData {
   headings: { level: number; text: string }[];
   images: { src: string; alt: string | null; loading: string | null }[];
   jsonLd: string[];
-  scripts: { src: string | null; async: boolean; defer: boolean; inHead: boolean }[];
+  scripts: { src: string | null; async: boolean; defer: boolean; isModule: boolean; inHead: boolean }[];
   links: { href: string; rel: string; hreflang?: string }[];
   anchors: { href: string; isInternal: boolean }[];
   bodyTextLength: number;

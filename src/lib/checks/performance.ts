@@ -4,8 +4,9 @@ export function checkPerformance(data: ParsedSEOData): CheckResult[] {
   const checks: CheckResult[] = [];
 
   // Render-blocking scripts in head
+  // Note: type="module" scripts are deferred by spec and don't block rendering
   const blockingScripts = data.scripts.filter(
-    (s) => s.inHead && s.src && !s.async && !s.defer
+    (s) => s.inHead && s.src && !s.async && !s.defer && !s.isModule
   );
   checks.push({
     id: 'perf-render-blocking',

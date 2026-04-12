@@ -102,6 +102,7 @@ export async function fetchWithSafety(
       headers: {
         'User-Agent': 'ShipReady-SEO-Scanner/1.0 (+https://vientapps.com/tools/seo-check/)',
         Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, br',
       },
     });
     clearTimeout(timeout);
