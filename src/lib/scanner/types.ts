@@ -6,7 +6,8 @@ export type CategoryId =
   | 'discoverability'
   | 'on-page'
   | 'performance'
-  | 'structured-data';
+  | 'structured-data'
+  | 'aeo';
 
 export interface CheckResult {
   id: string;

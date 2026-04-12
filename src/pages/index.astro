@@ -41,7 +41,7 @@ const faqSchema = {
       name: 'How does ShipReady scan my site?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Paste your deployed URL and ShipReady fetches the page, parses the HTML, and runs checks across 6 categories: Meta & Head, Social Sharing, Discoverability, On-Page Structure, Performance, and Structured Data. You get a letter grade and copy-paste fixes for every issue found.',
+        text: 'Paste your deployed URL and ShipReady fetches the page, parses the HTML, and runs checks across 7 categories: Meta & Head, Social Sharing, Discoverability, On-Page Structure, Performance, Structured Data, and Answer Engine Optimization. You get a letter grade and copy-paste fixes for every issue found.',
       },
     },
     {
@@ -58,6 +58,22 @@ const faqSchema = {
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'After scanning, ShipReady generates a single text block describing every SEO issue found. You can copy this and paste it directly into Claude Code, Cursor, or any AI coding tool, and it will fix all the issues for you.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is Answer Engine Optimization (AEO)?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Answer Engine Optimization ensures your site is discoverable and citable by AI-powered search tools like ChatGPT, Perplexity, and Google AI Overviews. It covers AI crawler access via robots.txt, llms.txt presence, FAQ and HowTo structured data, question-style content structure, and speakable markup for voice assistants.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How do I make my site visible to AI search engines?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Ensure your robots.txt does not block AI crawlers like GPTBot or ClaudeBot, add an llms.txt file describing your site, use question-phrased headings (What, How, Why), add FAQPage or HowTo schema markup, and write a concise meta description that reads as a direct answer.',
       },
     },
   ],
@@ -86,7 +102,7 @@ const categories = [
   {
     icon: '🔍',
     name: 'Discoverability',
-    description: 'robots.txt, sitemaps, indexability, HTTPS, llms.txt for AI search',
+    description: 'robots.txt, sitemaps, indexability, HTTPS, client-side rendering detection',
   },
   {
     icon: '📄',
@@ -102,6 +118,11 @@ const categories = [
     icon: '📊',
     name: 'Structured Data',
     description: 'JSON-LD, schema.org types, breadcrumbs, rich result eligibility',
+  },
+  {
+    icon: '🤖',
+    name: 'Answer Engine Optimization',
+    description: 'AI crawler access, llms.txt, question-answer structure, FAQ/HowTo schema, speakable markup',
   },
 ];
 ---
@@ -124,6 +145,11 @@ const categories = [
       <p class="mx-auto mt-6 max-w-2xl text-lg text-gray-400 leading-relaxed">
         AI tools build working apps but skip SEO basics. Paste your URL and get a
         scored report card with copy-paste fixes you can hand right back to your AI coding tool.
+      </p>
+      <p class="mx-auto mt-4 max-w-2xl text-base text-gray-500 leading-relaxed">
+        ShipReady is a free SEO and AEO scanner that checks your deployed site for missing meta tags,
+        Open Graph issues, broken structured data, and AI discoverability problems, then gives you
+        copy-paste fixes for Claude Code or Cursor.
       </p>
 
       <!-- Scanner Input -->
@@ -221,7 +247,7 @@ const categories = [
     <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
       <h2 class="font-display text-3xl font-bold text-white text-center mb-4">What We Check</h2>
       <p class="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
-        ShipReady scans 30+ SEO signals across 6 categories, covering everything AI coding tools typically miss.
+        ShipReady scans 35+ SEO signals across 7 categories, covering everything AI coding tools typically miss.
       </p>
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {categories.map((cat) => (
@@ -259,7 +285,7 @@ const categories = [
             </svg>
           </summary>
           <div class="border-t border-surface-700 px-5 py-4 text-sm leading-relaxed text-gray-400">
-            Paste your deployed URL and ShipReady fetches the page, parses the HTML, and runs checks across 6 categories: Meta & Head, Social Sharing, Discoverability, On-Page Structure, Performance, and Structured Data. You get a letter grade and copy-paste fixes for every issue found.
+            Paste your deployed URL and ShipReady fetches the page, parses the HTML, and runs checks across 7 categories: Meta & Head, Social Sharing, Discoverability, On-Page Structure, Performance, Structured Data, and Answer Engine Optimization. You get a letter grade and copy-paste fixes for every issue found.
           </div>
         </details>
         <details class="group rounded-xl border border-surface-700 bg-surface-900">
@@ -293,6 +319,28 @@ const categories = [
           </summary>
           <div class="border-t border-surface-700 px-5 py-4 text-sm leading-relaxed text-gray-400">
             ShipReady scans the initial HTML your server sends, which is the same thing search engines see on their first pass. If your site relies on client-side rendering (like a plain React SPA), ShipReady will detect that and flag it as a discoverability concern. Most SEO-critical elements like meta tags and structured data are typically in the initial HTML even on JS-heavy sites.
+          </div>
+        </details>
+        <details class="group rounded-xl border border-surface-700 bg-surface-900">
+          <summary class="flex cursor-pointer items-center justify-between p-5 font-medium text-white">
+            <span>What is Answer Engine Optimization (AEO)?</span>
+            <svg class="h-5 w-5 shrink-0 text-forge-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="border-t border-surface-700 px-5 py-4 text-sm leading-relaxed text-gray-400">
+            Answer Engine Optimization ensures your site is discoverable and citable by AI-powered search tools like ChatGPT, Perplexity, and Google AI Overviews. It covers AI crawler access via robots.txt, llms.txt presence, FAQ and HowTo structured data, question-style content structure, and speakable markup for voice assistants.
+          </div>
+        </details>
+        <details class="group rounded-xl border border-surface-700 bg-surface-900">
+          <summary class="flex cursor-pointer items-center justify-between p-5 font-medium text-white">
+            <span>How do I make my site visible to AI search engines?</span>
+            <svg class="h-5 w-5 shrink-0 text-forge-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="border-t border-surface-700 px-5 py-4 text-sm leading-relaxed text-gray-400">
+            Ensure your robots.txt does not block AI crawlers like GPTBot or ClaudeBot, add an llms.txt file describing your site, use question-phrased headings (What, How, Why), add FAQPage or HowTo schema markup, and write a concise meta description that reads as a direct answer.
           </div>
         </details>
       </div>

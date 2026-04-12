@@ -5,6 +5,7 @@ import { checkDiscoverability } from './discoverability';
 import { checkOnPage } from './on-page';
 import { checkPerformance } from './performance';
 import { checkStructuredData } from './structured-data';
+import { checkAEO } from './aeo';
 
 export function runAllChecks(
   data: ParsedSEOData,
@@ -46,6 +47,12 @@ export function runAllChecks(
       name: 'Structured Data',
       score: 0,
       checks: checkStructuredData(data),
+    },
+    {
+      id: 'aeo',
+      name: 'Answer Engine Optimization',
+      score: 0,
+      checks: checkAEO(data, external),
     },
   ];
 }

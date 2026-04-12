@@ -88,20 +88,6 @@ export function checkDiscoverability(data: ParsedSEOData, external: ExternalChec
       : undefined,
   });
 
-  // llms.txt
-  checks.push({
-    id: 'discover-llms-txt',
-    name: 'llms.txt (AI visibility)',
-    status: external.llmsTxt.accessible ? 'pass' : 'warn',
-    weight: 1,
-    message: external.llmsTxt.accessible
-      ? 'llms.txt is present. This helps AI search tools understand your site.'
-      : 'No llms.txt found. This is a new standard that helps AI-powered search tools (like ChatGPT, Perplexity, Claude) understand your site.',
-    fixSnippet: external.llmsTxt.accessible
-      ? undefined
-      : '# Create a llms.txt file in your public folder with:\n# - A brief description of your site\n# - Key pages and their purposes\n# - Contact info\n# See https://llmstxt.org for the spec',
-  });
-
   // CSR detection
   const bodyLength = data.bodyTextLength;
   const hasThinBody = bodyLength < 200;
