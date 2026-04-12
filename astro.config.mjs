@@ -4,7 +4,6 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://vientapps.com',
-  base: '/tools/seo-check',
   trailingSlash: 'always',
   output: 'server',
   adapter: cloudflare({
