@@ -517,6 +517,7 @@ const categories = [
       const url = urlInput.value.trim();
       if (!url) return;
 
+      (window as any).va?.track('tool_use', 'seo-check');
       showState('loading');
       scanButton.disabled = true;
 
