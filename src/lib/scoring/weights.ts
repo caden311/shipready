@@ -1,11 +1,11 @@
 import type { CategoryId } from '../scanner/types';
 
 export const CATEGORY_WEIGHTS: Record<CategoryId, number> = {
-  'meta-head': 0.23,
-  'social-sharing': 0.14,
-  'discoverability': 0.19,
-  'on-page': 0.19,
-  'performance': 0.09,
-  'structured-data': 0.08,
-  'aeo': 0.08,
+  'meta-head': 0.21,
+  'social-sharing': 0.13,
+  'discoverability': 0.18,
+  'on-page': 0.18,
+  'performance': 0.08,
+  'structured-data': 0.07,
+  'aeo': 0.15,
 };
