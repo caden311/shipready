@@ -1,0 +1,55 @@
+---
+---
+
+<button
+  type="button"
+  data-theme-toggle
+  class="inline-grid h-8 w-8 place-items-center rounded-md text-ink-2 transition-colors hover:bg-surface hover:text-ink"
+  aria-label="Switch theme"
+  title="Switch theme"
+>
+  <svg data-theme-icon="light" class="hidden h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+  <svg data-theme-icon="dark" class="hidden h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+</button>
+
+<script>
+  const STORAGE_KEY = 'vientapps:theme';
+
+  function getTheme(): string {
+    try {
+      const v = localStorage.getItem(STORAGE_KEY);
+      if (v === 'light' || v === 'dark') return v;
+    } catch {}
+    return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function applyTheme(theme: string) {
+    document.documentElement.setAttribute('data-theme', theme);
+    try { localStorage.setItem(STORAGE_KEY, theme); } catch {}
+
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', theme === 'dark' ? '#0a0a0b' : '#f9f9f7');
+
+    document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((btn) => {
+      const label = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+      btn.setAttribute('aria-label', label);
+      btn.setAttribute('title', label);
+      btn.querySelectorAll<HTMLElement>('[data-theme-icon]').forEach((icon) => {
+        icon.classList.toggle('hidden', icon.dataset.themeIcon !== theme);
+      });
+    });
+  }
+
+  function init() {
+    applyTheme(getTheme());
+
+    document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        applyTheme(getTheme() === 'dark' ? 'light' : 'dark');
+      });
+    });
+  }
+
+  init();
+  document.addEventListener('astro:after-swap', init);
+</script>

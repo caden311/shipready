@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import ThemeToggle from '../components/ThemeToggle.astro';
 
 interface Props {
   title: string;
@@ -19,10 +20,24 @@ const resolvedOgImage = ogImage || new URL('/tools/seo-check/og-shipready.png', 
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a0a0b" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={resolvedCanonical} />
     <link rel="icon" type="image/svg+xml" href="/tools/seo-check/favicon.svg" />
+
+    <!-- Prevent FOUC -->
+    <script is:inline>
+      (function(){
+        var s=null;
+        try{s=localStorage.getItem('vientapps:theme')}catch(e){}
+        if(s!=='light'&&s!=='dark')s=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+        document.documentElement.setAttribute('data-theme',s);
+        try{localStorage.setItem('vientapps:theme',s)}catch(e){}
+        var m=document.querySelector('meta[name="theme-color"]');
+        if(m)m.content=s==='dark'?'#0a0a0b':'#f9f9f7'
+      })()
+    </script>
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -44,24 +59,35 @@ const resolvedOgImage = ogImage || new URL('/tools/seo-check/og-shipready.png', 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      />
+    </noscript>
 
     <slot name="head" />
   </head>
-  <body class="min-h-screen bg-surface-950 text-gray-200 antialiased">
-    <header class="border-b border-surface-700 bg-surface-900/80 backdrop-blur-sm">
+  <body class="min-h-screen bg-bg text-ink antialiased">
+    <header class="border-b border-line bg-bg-2/85 backdrop-blur-sm">
       <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-        <a href="https://vientapps.com" class="flex items-center gap-2 text-white hover:text-forge-300 transition-colors">
+        <a href="https://vientapps.com" class="flex items-center gap-2 text-ink hover:text-accent transition-colors">
           <span class="font-display text-xl font-bold">VientApps</span>
         </a>
-        <a
-          href="https://vientapps.com/tools/"
-          class="text-sm text-gray-400 hover:text-forge-400 transition-colors"
-        >
-          More Tools
-        </a>
+        <div class="flex items-center gap-3">
+          <a
+            href="https://vientapps.com/tools/"
+            class="text-sm text-ink-3 hover:text-accent transition-colors"
+          >
+            More Tools
+          </a>
+          <ThemeToggle />
+        </div>
       </div>
     </header>
 
@@ -69,15 +95,15 @@ const resolvedOgImage = ogImage || new URL('/tools/seo-check/og-shipready.png', 
       <slot />
     </main>
 
-    <footer class="mt-auto border-t border-surface-700 bg-surface-900/50">
+    <footer class="mt-auto border-t border-line bg-bg-2/50">
       <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <p class="text-sm text-gray-500">
-            Built by <a href="https://vientapps.com" class="text-forge-400 hover:text-forge-300 transition-colors">Vient Apps</a>
+          <p class="text-sm text-ink-3">
+            Built by <a href="https://vientapps.com" class="text-accent hover:text-accent transition-colors">Vient Apps</a>
           </p>
-          <div class="flex gap-6 text-sm text-gray-500">
-            <a href="https://vientapps.com/tools/" class="hover:text-gray-300 transition-colors">All Tools</a>
-            <a href="https://vientapps.com/blog/" class="hover:text-gray-300 transition-colors">Blog</a>
+          <div class="flex gap-6 text-sm text-ink-3">
+            <a href="https://vientapps.com/tools/" class="hover:text-ink-2 transition-colors">All Tools</a>
+            <a href="https://vientapps.com/blog/" class="hover:text-ink-2 transition-colors">Blog</a>
           </div>
         </div>
       </div>
