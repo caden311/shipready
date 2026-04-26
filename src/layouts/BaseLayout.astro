@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
-import ThemeToggle from '../components/ThemeToggle.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title: string;
@@ -73,41 +74,14 @@ const resolvedOgImage = ogImage || new URL('/tools/seo-check/og-shipready.png', 
 
     <slot name="head" />
   </head>
-  <body class="min-h-screen bg-bg text-ink antialiased">
-    <header class="border-b border-line bg-bg-2/85 backdrop-blur-sm">
-      <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-        <a href="https://vientapps.com" class="flex items-center gap-2 text-ink hover:text-accent transition-colors">
-          <span class="font-display text-xl font-bold">VientApps</span>
-        </a>
-        <div class="flex items-center gap-3">
-          <a
-            href="https://vientapps.com/tools/"
-            class="text-sm text-ink-3 hover:text-accent transition-colors"
-          >
-            More Tools
-          </a>
-          <ThemeToggle />
-        </div>
-      </div>
-    </header>
+  <body class="min-h-screen flex flex-col bg-bg text-ink antialiased">
+    <Header />
 
-    <main>
+    <main class="flex-1">
       <slot />
     </main>
 
-    <footer class="mt-auto border-t border-line bg-bg-2/50">
-      <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <p class="text-sm text-ink-3">
-            Built by <a href="https://vientapps.com" class="text-accent hover:text-accent transition-colors">Vient Apps</a>
-          </p>
-          <div class="flex gap-6 text-sm text-ink-3">
-            <a href="https://vientapps.com/tools/" class="hover:text-ink-2 transition-colors">All Tools</a>
-            <a href="https://vientapps.com/blog/" class="hover:text-ink-2 transition-colors">Blog</a>
-          </div>
-        </div>
-      </div>
-    </footer>
+    <Footer />
     <script src="https://vientapps.com/scripts/track.js" defer></script>
   </body>
 </html>

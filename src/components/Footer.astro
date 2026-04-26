@@ -1,0 +1,113 @@
+---
+const year = new Date().getFullYear();
+
+const travelLinks = [
+  { href: 'https://vientapps.com/tools/compare/', label: 'Compare airlines' },
+  { href: 'https://vientapps.com/tools/carry-on-size/', label: 'Carry-on size' },
+  { href: 'https://vientapps.com/tools/airports/', label: 'Airport guides' },
+  { href: 'https://vientapps.com/packing-list/', label: 'Packing lists' },
+  { href: 'https://vientapps.com/guides/', label: 'Travel guides' },
+  { href: 'https://vientapps.com/tools/widgets/', label: 'Embed widgets' },
+];
+
+const studioLinks = [
+  { href: 'https://vientapps.com/about/', label: 'About' },
+  { href: 'https://vientapps.com/about/caden/', label: 'About Caden' },
+  { href: 'https://vientapps.com/about/methodology/', label: 'Methodology' },
+  { href: 'https://vientapps.com/services/', label: 'Services' },
+  { href: 'https://vientapps.com/blog/', label: 'Blog' },
+  { href: 'https://vientapps.com/projects/', label: 'Projects' },
+];
+
+const legalLinks = [
+  { href: 'https://vientapps.com/privacy/', label: 'Privacy' },
+  { href: 'https://vientapps.com/terms/', label: 'Terms' },
+  { href: 'https://vientapps.com/rss.xml', label: 'RSS' },
+];
+
+const socialLinks = [
+  { href: 'https://github.com/caden311', label: 'GitHub' },
+  { href: 'https://www.linkedin.com/in/caden-sorenson-015829bb/', label: 'LinkedIn' },
+];
+
+// Sync with blog/src/data/press.ts
+const featuredPress = {
+  publication: 'Forbes',
+  url: 'https://www.forbes.com/sites/christopherelliott/2026/04/25/heres-your-summer-2026-digital-survival-kit-for-flight-delays-and-cancellations/',
+  headline: "Here's Your Summer 2026 Digital Survival Kit For Flight Delays And Cancellations",
+};
+---
+
+<footer class="mt-16 border-t border-line">
+  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+      <div>
+        <h3 class="font-display text-sm font-medium uppercase tracking-wide text-ink">Travel tools</h3>
+        <ul class="mt-4 space-y-2">
+          {travelLinks.map(({ href, label }) => (
+            <li>
+              <a href={href} class="text-sm text-ink-3 hover:text-accent transition-colors">
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-display text-sm font-medium uppercase tracking-wide text-ink">Studio</h3>
+        <ul class="mt-4 space-y-2">
+          {studioLinks.map(({ href, label }) => (
+            <li>
+              <a href={href} class="text-sm text-ink-3 hover:text-accent transition-colors">
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-display text-sm font-medium uppercase tracking-wide text-ink">Legal</h3>
+        <ul class="mt-4 space-y-2">
+          {legalLinks.map(({ href, label }) => (
+            <li>
+              <a href={href} class="text-sm text-ink-3 hover:text-accent transition-colors">
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-display text-sm font-medium uppercase tracking-wide text-ink">Elsewhere</h3>
+        <ul class="mt-4 space-y-2">
+          {socialLinks.map(({ href, label }) => (
+            <li>
+              <a
+                href={href}
+                class="text-sm text-ink-3 hover:text-accent transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+          <li class="pt-2">
+            <a
+              href={featuredPress.url}
+              target="_blank"
+              rel="noopener"
+              class="text-sm text-ink-3 hover:text-accent transition-colors"
+              title={featuredPress.headline}
+            >
+              Featured in {featuredPress.publication} &rarr;
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 border-t border-line pt-6">
+      <p class="text-xs text-ink-3">&copy; {year} Vientapps. Independent travel tools and build logs from Logan, Utah.</p>
+    </div>
+  </div>
+</footer>

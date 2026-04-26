@@ -1,0 +1,119 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const navLinks = [
+  { href: 'https://vientapps.com/guides/', label: 'Guides' },
+  { href: 'https://vientapps.com/packing-list/', label: 'Packing Lists' },
+  { href: 'https://vientapps.com/destinations/', label: 'Destinations' },
+  { href: 'https://vientapps.com/tools/', label: 'Tools' },
+];
+
+const activeHref = 'https://vientapps.com/tools/';
+---
+
+<header class="sticky top-0 z-50 border-b border-line bg-bg/85 backdrop-blur-[10px]">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3.5 sm:px-6">
+    <a href="https://vientapps.com" class="group flex items-center gap-2.5 no-underline">
+      <svg class="h-[18px] w-[18px] text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 2l8.5 5v10L12 22l-8.5-5V7z" />
+      </svg>
+      <span class="font-body text-[15px] font-semibold tracking-tight text-ink">Vientapps</span>
+    </a>
+
+    <!-- Desktop nav -->
+    <div class="hidden items-center gap-1 md:flex">
+      {navLinks.map(({ href, label }) => {
+        const isActive = href === activeHref;
+        return (
+          <a
+            href={href}
+            class:list={[
+              "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
+              isActive
+                ? "bg-accent text-on-accent"
+                : "text-ink-2 hover:bg-surface hover:text-ink"
+            ]}
+          >
+            {label}
+          </a>
+        );
+      })}
+      <a
+        href="https://vientapps.com/search/"
+        aria-label="Search"
+        class="ml-1 inline-grid h-8 w-8 place-items-center rounded-md text-ink-2 transition-colors hover:bg-surface hover:text-ink"
+      >
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-3.5-3.5" />
+        </svg>
+      </a>
+      <ThemeToggle />
+    </div>
+
+    <!-- Hamburger button -->
+    <button
+      id="mobile-menu-btn"
+      type="button"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+      class="flex items-center justify-center rounded-md p-2 text-ink-2 transition-colors hover:bg-surface hover:text-ink md:hidden"
+    >
+      <svg id="menu-icon-open" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+      <svg id="menu-icon-close" class="hidden h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden border-t border-line bg-bg/95 backdrop-blur-sm md:hidden">
+    <div class="space-y-1 px-4 py-3">
+      {navLinks.map(({ href, label }) => {
+        const isActive = href === activeHref;
+        return (
+          <a
+            href={href}
+            class:list={[
+              "block rounded-md px-3 py-2.5 text-base font-medium transition-colors",
+              isActive
+                ? "bg-accent text-on-accent"
+                : "text-ink-2 hover:bg-surface hover:text-ink"
+            ]}
+          >
+            {label}
+          </a>
+        );
+      })}
+      <a
+        href="https://vientapps.com/search/"
+        class="flex items-center gap-2 rounded-md px-3 py-2.5 text-base font-medium text-ink-2 transition-colors hover:bg-surface hover:text-ink"
+      >
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        Search
+      </a>
+      <div class="flex items-center gap-2 px-3 py-2.5">
+        <ThemeToggle />
+        <span class="text-sm text-ink-3">Theme</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn')!;
+  const menu = document.getElementById('mobile-menu')!;
+  const iconOpen = document.getElementById('menu-icon-open')!;
+  const iconClose = document.getElementById('menu-icon-close')!;
+
+  btn.addEventListener('click', () => {
+    const isOpen = menu.classList.toggle('hidden');
+    btn.setAttribute('aria-expanded', String(!isOpen));
+    iconOpen.classList.toggle('hidden');
+    iconClose.classList.toggle('hidden');
+  });
+</script>
